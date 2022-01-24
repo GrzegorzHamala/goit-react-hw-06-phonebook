@@ -1,51 +1,70 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addContact } from "../../redux/action";
+import { nanoid } from "nanoid";
 
-function inputContact({
-  inputNameID,
-  inputNumberID,
-  nameChange,
-  numberChange,
-  addContact,
-}) {
+const InputContact = () => {
+  const inputNameID = nanoid();
+  const inputTelID = nanoid();
+
+  const contacts = useSelector((state) => state.contacts);
+  const dispatch = useDispatch();
+
+  const submitForm = (evt) => {
+    const form = evt.target;
+    const name = form.name.value;
+    const number = form.number.value;
+    evt.preventDefault();
+    if (contacts.some((contacts) => contacts.name === name)) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
+    if (contacts.some((contacts) => contacts.number === number)) {
+      alert(`${number} is already in contacts`);
+      return;
+    }
+
+    dispatch(addContact({ name, number }));
+    form.reset();
+  };
+
   return (
     <div>
-      <form onSubmit={addContact}>
+      <form onSubmit={submitForm}>
         <fieldset>
-          <label htmlFor={inputNameID} className="letter">
-            Name
-          </label>
+          <label htmlFor={inputNameID}>Name</label>
+          <br />
           <input
-            className="name"
+            id={inputNameID}
             type="text"
+            autoComplete="off"
             name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            placeholder="Contact Name"
+            pattern="[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            onChange={nameChange}
-            id={inputNameID}
           />
-          <label htmlFor={inputNumberID} className="letter">
-            Number
-          </label>
-
+          <br />
+          <br />
+          <label htmlFor={inputTelID}>Number</label>
+          <br />
           <input
-            className="tel"
+            id={inputTelID}
             type="tel"
+            autoComplete="off"
             name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            placeholder="Phone Number"
+            pattern="(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
-            onChange={numberChange}
-            id={inputNumberID}
           />
-
-          <button type="submit" className="addBtn">
-            Add contact
-          </button>
+          <br />
+          <br />
+          <button type="submit">Add contact</button>
         </fieldset>
       </form>
     </div>
   );
-}
+};
 
-export default inputContact;
+export default InputContact;
