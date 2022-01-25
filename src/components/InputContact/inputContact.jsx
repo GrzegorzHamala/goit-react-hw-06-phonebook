@@ -4,17 +4,17 @@ import { addContact } from "../../redux/action";
 import { nanoid } from "nanoid";
 
 const InputContact = () => {
-  const inputNameID = nanoid();
-  const inputTelID = nanoid();
+  const NameID = nanoid();
+  const TelID = nanoid();
 
   const contacts = useSelector((state) => state.contacts);
   const dispatch = useDispatch();
 
-  const submitForm = (evt) => {
-    const form = evt.target;
+  const submitForm = (e) => {
+    const form = e.target;
     const name = form.name.value;
     const number = form.number.value;
-    evt.preventDefault();
+    e.preventDefault();
     if (contacts.some((contacts) => contacts.name === name)) {
       alert(`${name} is already in contacts`);
       return;
@@ -32,10 +32,10 @@ const InputContact = () => {
     <div>
       <form onSubmit={submitForm}>
         <fieldset>
-          <label htmlFor={inputNameID}>Name</label>
+          <label htmlFor={NameID}>Name</label>
           <br />
           <input
-            id={inputNameID}
+            id={NameID}
             type="text"
             autoComplete="off"
             name="name"
@@ -46,10 +46,10 @@ const InputContact = () => {
           />
           <br />
           <br />
-          <label htmlFor={inputTelID}>Number</label>
+          <label htmlFor={TelID}>Number</label>
           <br />
           <input
-            id={inputTelID}
+            id={TelID}
             type="tel"
             autoComplete="off"
             name="number"

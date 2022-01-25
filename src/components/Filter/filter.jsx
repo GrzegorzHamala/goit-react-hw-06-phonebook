@@ -6,8 +6,8 @@ const Filter = () => {
   const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
-  const filterPhonebook = (evt) => {
-    dispatch(filterContacts(evt.target.value));
+  const filterPhonebook = (e) => {
+    dispatch(filterContacts(e.target.value));
   };
 
   return (
